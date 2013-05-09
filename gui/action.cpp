@@ -496,6 +496,40 @@ int GUIAction::doAction(Action action, int isThreaded /* = 0 */)
 		operation_end(0, simulate);
 	}
 	
+	if (function == "enablemdnie")
+	{
+		string result;
+
+		operation_start("Enable MDNIE");
+		if (PartitionManager.Mount_By_Path("/data", true)) 
+		{
+			TWFunc::Exec_Cmd("mkdir /data/.jeboo;rm -f /data/.jeboo/mdnie_tweak; echo \"1\" > /data/.jeboo/mdnie_tweak", result);
+			PartitionManager.UnMount_By_Path("/data", false);
+		}
+		else
+			LOGERR("Unable to mount /data.\n");
+		
+		operation_end(0, simulate);
+		return 0;
+	}
+
+	if (function == "disablemdnie")
+	{
+		string result;
+
+		operation_start("Disable MDNIE");
+		if (PartitionManager.Mount_By_Path("/data", true)) 
+		{
+			TWFunc::Exec_Cmd("mkdir /data/.jeboo;rm -f /data/.jeboo/mdnie_tweak; echo \"0\" > /data/.jeboo/mdnie_tweak", result);
+			PartitionManager.UnMount_By_Path("/data", false);
+		}
+		else
+			LOGERR("Unable to mount /data.\n");		
+
+		operation_end(0, simulate);
+		return 0;
+	}
+
 	if (function == "copylog")
 	{
 		operation_start("Copy Log");
